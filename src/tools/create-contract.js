@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
+import { convertSloToSlaProperties } from "./utils.js";
 
 /**
  * Create a new data contract following ODCS
@@ -88,11 +89,7 @@ export async function createDataContract(args) {
     contract.slaProperties = slaProperties;
   } else if (slo && Object.keys(slo).length > 0) {
     // Convert simple slo object to slaProperties array
-    contract.slaProperties = Object.entries(slo).map(([key, value]) => ({
-      property: key,
-      value: value.value || value,
-      ...(value.unit && { unit: value.unit }),
-    }));
+    contract.slaProperties = convertSloToSlaProperties(slo);
   }
 
   // Convert to requested format

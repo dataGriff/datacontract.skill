@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
+import { convertSloToSlaProperties } from "./utils.js";
 
 /**
  * Update an existing data contract
@@ -55,11 +56,7 @@ export async function updateDataContract(args) {
 
   // Handle slo (convert to slaProperties for backwards compatibility)
   if (updates.slo && typeof updates.slo === "object") {
-    const slaProps = Object.entries(updates.slo).map(([key, value]) => ({
-      property: key,
-      value: value.value || value,
-      ...(value.unit && { unit: value.unit }),
-    }));
+    const slaProps = convertSloToSlaProperties(updates.slo);
     updatedContract.slaProperties = [
       ...(existingContract.slaProperties || []),
       ...slaProps,

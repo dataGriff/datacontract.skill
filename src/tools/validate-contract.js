@@ -35,8 +35,6 @@ async function validateWithJsonSchema(contract, schemaUrl) {
     strict: false,
     validateFormats: true,
     strictSchema: false,
-    // Support for 2019-09 schema features
-    allowUnionTypes: true,
   });
   addFormats(ajv);
 

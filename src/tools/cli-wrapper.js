@@ -1,7 +1,4 @@
 import { execSync, spawn } from "child_process";
-import { promisify } from "util";
-
-const execAsync = promisify(execSync);
 
 /**
  * Check if datacontract CLI is installed
