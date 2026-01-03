@@ -1,0 +1,88 @@
+apiVersion: v3.1.0
+kind: DataContract
+id: customers-example-002
+version: 2.1.0
+status: active
+name: customers
+domain: crm
+description:
+  purpose: Customer master data
+  usage: Central repository for customer information used across all systems
+  limitations: PII data - access restricted to authorized personnel only
+servers:
+  - server: prod-postgres
+    type: postgresql
+    description: Production PostgreSQL database
+    environment: prod
+    host: db.example.com
+    port: 5432
+    database: customers
+    schema: public
+schema:
+  - name: customer_id
+    type: string
+    description: Unique customer identifier (UUID)
+    required: true
+    primaryKey: true
+  - name: email
+    type: string
+    description: Customer email address
+    required: true
+    unique: true
+  - name: first_name
+    type: string
+    description: Customer first name
+    required: true
+  - name: last_name
+    type: string
+    description: Customer last name
+    required: true
+  - name: phone
+    type: string
+    description: Customer phone number
+    required: false
+    pattern: "^\\+?[1-9]\\d{1,14}$"
+  - name: date_of_birth
+    type: date
+    description: Customer date of birth
+    required: false
+  - name: account_status
+    type: string
+    description: Customer account status
+    required: true
+    enum:
+      - active
+      - inactive
+      - suspended
+      - closed
+  - name: registration_date
+    type: timestamp
+    description: Date when customer registered
+    required: true
+  - name: last_login
+    type: timestamp
+    description: Last login timestamp
+    required: false
+  - name: total_orders
+    type: integer
+    description: Total number of orders placed
+    required: true
+  - name: lifetime_value
+    type: decimal
+    description: Total lifetime value in USD
+    required: true
+  - name: created_at
+    type: timestamp
+    description: Record creation timestamp
+    required: true
+  - name: updated_at
+    type: timestamp
+    description: Record last update timestamp
+    required: true
+slaProperties:
+  - property: availability
+    value: "99.99"
+    unit: "%"
+  - property: response_time
+    value: "500"
+    unit: ms
