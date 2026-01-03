@@ -13,12 +13,21 @@ async function fetchOdcsSchema(schemaUrl) {
   const url = schemaUrl || defaultUrl;
 
   try {
-    const response = await fetch(url);
+    // Fetch with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
       throw new Error(`Failed to fetch schema: ${response.statusText}`);
     }
     return await response.json();
   } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error(`Failed to fetch ODCS schema from ${url}: Request timeout`);
+    }
     throw new Error(`Failed to fetch ODCS schema from ${url}: ${error.message}`);
   }
 }
@@ -29,6 +38,9 @@ async function fetchOdcsSchema(schemaUrl) {
 async function validateWithJsonSchema(contract, schemaUrl) {
   const schema = await fetchOdcsSchema(schemaUrl);
 
+  // Note: We use strict: false and strictSchema: false because ODCS uses
+  // JSON Schema draft 2019-09 which includes features that AJV's strict mode
+  // may flag as warnings. These settings are necessary for ODCS compatibility.
   const ajv = new Ajv({
     allErrors: true,
     verbose: true,

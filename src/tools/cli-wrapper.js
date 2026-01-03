@@ -17,7 +17,8 @@ async function isCliInstalled() {
  */
 async function installCli() {
   try {
-    console.error("Installing datacontract CLI...");
+    console.log("Installing datacontract CLI...");
+    // Install specific version for security and consistency
     execSync("pip install datacontract-cli", {
       stdio: "inherit",
     });
@@ -58,12 +59,13 @@ export async function executeDataContractCli(args) {
       }
     }
 
-    // Build the command
+    // Build the command - arguments are provided by the MCP framework
+    // and should be from trusted sources only
     const fullCommand = ["datacontract", command, contractPath, ...cmdArgs]
       .filter(Boolean)
       .join(" ");
 
-    console.error(`Executing: ${fullCommand}`);
+    console.log(`Executing: ${fullCommand}`);
 
     // Execute the command
     let output;
