@@ -1,0 +1,78 @@
+apiVersion: v3.1.0
+kind: DataContract
+id: orders-example-001
+version: 1.0.0
+status: active
+name: orders
+domain: sales
+description:
+  purpose: Order transactions data for e-commerce platform
+  usage: Used for sales analytics, customer insights, and revenue reporting
+  limitations: Data refreshed daily at midnight UTC
+servers:
+  - server: production-bigquery
+    type: bigquery
+    description: Production BigQuery server
+    environment: prod
+    project: ecommerce-prod
+    dataset: sales
+schema:
+  - name: order_id
+    type: string
+    description: Unique order identifier (UUID format)
+    required: true
+    primaryKey: true
+  - name: customer_id
+    type: string
+    description: Customer identifier
+    required: true
+  - name: order_date
+    type: timestamp
+    description: Date and time when order was placed
+    required: true
+  - name: total_amount
+    type: decimal
+    description: Total order amount in USD
+    required: true
+  - name: status
+    type: string
+    description: Current order status
+    required: true
+    enum:
+      - pending
+      - processing
+      - shipped
+      - delivered
+      - cancelled
+      - refunded
+  - name: payment_method
+    type: string
+    description: Payment method used
+    required: false
+    enum:
+      - credit_card
+      - debit_card
+      - paypal
+      - bank_transfer
+  - name: shipping_address
+    type: object
+    description: Shipping address details
+    required: false
+  - name: created_at
+    type: timestamp
+    description: Record creation timestamp
+    required: true
+  - name: updated_at
+    type: timestamp
+    description: Record last update timestamp
+    required: true
+slaProperties:
+  - property: latency
+    value: "1000"
+    unit: ms
+  - property: uptime
+    value: "99.9"
+    unit: "%"
+  - property: freshness
+    value: "24"
+    unit: hours

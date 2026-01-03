@@ -1,0 +1,131 @@
+{
+  "apiVersion": "v3.1.0",
+  "kind": "DataContract",
+  "id": "products-example-003",
+  "version": "1.2.0",
+  "status": "active",
+  "name": "products",
+  "domain": "inventory",
+  "description": {
+    "purpose": "Product catalog and inventory data",
+    "usage": "Used for e-commerce website, inventory management, and supply chain operations",
+    "limitations": "Stock quantities updated every 15 minutes"
+  },
+  "servers": [
+    {
+      "server": "prod-mongodb",
+      "type": "custom",
+      "description": "Production MongoDB cluster",
+      "environment": "prod",
+      "host": "mongodb.example.com",
+      "port": 27017,
+      "database": "products"
+    }
+  ],
+  "schema": [
+    {
+      "name": "product_id",
+      "type": "string",
+      "description": "Unique product identifier (SKU)",
+      "required": true,
+      "primaryKey": true
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Product name",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Detailed product description",
+      "required": true
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "description": "Product category",
+      "required": true
+    },
+    {
+      "name": "brand",
+      "type": "string",
+      "description": "Product brand",
+      "required": false
+    },
+    {
+      "name": "price",
+      "type": "decimal",
+      "description": "Current price in USD",
+      "required": true
+    },
+    {
+      "name": "cost",
+      "type": "decimal",
+      "description": "Cost price in USD",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency code (ISO 4217)",
+      "required": true,
+      "pattern": "^[A-Z]{3}$"
+    },
+    {
+      "name": "stock_quantity",
+      "type": "integer",
+      "description": "Available stock quantity",
+      "required": true
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "description": "Whether product is active for sale",
+      "required": true
+    },
+    {
+      "name": "weight",
+      "type": "decimal",
+      "description": "Product weight in kg",
+      "required": false
+    },
+    {
+      "name": "dimensions",
+      "type": "object",
+      "description": "Product dimensions (length, width, height)",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "array",
+      "description": "Product tags for search and filtering",
+      "required": false
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "description": "Record creation timestamp",
+      "required": true
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "description": "Record last update timestamp",
+      "required": true
+    }
+  ],
+  "slaProperties": [
+    {
+      "property": "data_freshness",
+      "value": "15",
+      "unit": "minutes"
+    },
+    {
+      "property": "uptime",
+      "value": "99.9",
+      "unit": "%"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "datacontract-skill",
+  "version": "1.0.0",
+  "description": "MCP server for creating, updating and validating data contracts using the Open Data Contract Standard (ODCS)",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "datacontract-skill": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "data-contract",
+    "odcs",
+    "open-data-contract-standard"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  }
+}
